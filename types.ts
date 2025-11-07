@@ -24,25 +24,12 @@ export interface ApiData {
   ccg: string;
   nuts: string;
   pfa?: string; // Added as it's in the example data
-  codes: {
-    admin_district: string;
-    admin_county: string;
-    admin_ward: string;
-    parish: string;
-    parliamentary_constituency: string;
-    parliamentary_constituency_2024?: string; // Added as it's in the example data
-    ccg: string;
-    ccg_id?: string; // Added as it's in the example data
-    ced?: string; // Added as it's in the example data
-    nuts: string;
-    lsoa?: string; // Added as it's in the example data
-    msoa?: string; // Added as it's in the example data
-    lau2?: string; // Added as it's in the example data
-    pfa?: string; // Added as it's in the example data
-  };
+  codes: Record<string, string>; // Changed to Record<string, string> for flexible iteration
   terminated?: boolean; // Changed to boolean as per example data
   year_terminated?: number;
   month_terminated?: number;
+  // Add date_of_introduction to ApiData interface
+  date_of_introduction?: string;
   osm_admin_district_geojson?: any; // New field for OSM boundary GeoJSON
 }
 

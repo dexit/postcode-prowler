@@ -9,6 +9,7 @@ import MapComponent from './components/MapComponent'; // Directly import MapComp
 import StatusCard from './components/StatusCard'; // New card component
 import GeographyCard from './components/GeographyCard'; // New card component
 import AdminCard from './components/AdminCard'; // New card component
+import CodesCard from './components/CodesCard'; // New card component
 import { PostcodeApiResponse, HistoryEntry } from './types';
 import { loadHistory, saveHistory } from './utility/localStorage';
 import { fetchAdminDistrictBoundary } from './utility/osmApi';
@@ -117,7 +118,7 @@ const App: React.FC = () => {
             {error && <div className="col-span-full"><ErrorDisplay message={error} /></div>}
 
             {postcodeData && !isLoading && !error && postcodeData.asf && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> {/* Results bento grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"> {/* Results bento grid */}
                 {/* Map component - spans two columns */}
                 {(postcodeData.api_data?.latitude !== undefined && postcodeData.api_data?.longitude !== undefined) && (
                   <div className="md:col-span-2 lg:col-span-2">
@@ -130,8 +131,10 @@ const App: React.FC = () => {
                   </div>
                 )}
 
-                {/* Status Card - fills remaining column or full width */}
-                <StatusCard data={postcodeData} />
+                {/* Status Card - spans two columns */}
+                <div className="md:col-span-2 lg:col-span-2">
+                  <StatusCard data={postcodeData} />
+                </div>
 
                 {/* Geography Card - spans two columns */}
                 <div className="md:col-span-2 lg:col-span-2">
@@ -139,7 +142,16 @@ const App: React.FC = () => {
                 </div>
 
                 {/* Administrative Card - fills remaining space */}
-                <AdminCard data={postcodeData} />
+                <div className="md:col-span-2 lg:col-span-2">
+                  <AdminCard data={postcodeData} />
+                </div>
+
+                {/* Codes Card - spans full width */}
+                {postcodeData.api_data?.codes && Object.keys(postcodeData.api_data.codes).length > 0 && (
+                  <div className="col-span-full">
+                    <CodesCard codes={postcodeData.api_data.codes} />
+                  </div>
+                )}
               </div>
             )}
           </div>
