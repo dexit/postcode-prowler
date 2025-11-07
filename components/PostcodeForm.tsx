@@ -74,49 +74,48 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="mb-8 max-w-sm mx-auto">
-      <div className="relative group">
+      <div className="relative">
         <input
           ref={inputRef}
           type="text"
           id="postcodeInput"
-          className="rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 postcode-input dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
-          style={{
-            background: 'transparent',
-            padding: '0 48px 0 0', // Adjust padding-right for button, padding-left 0 for alignment
-            fontSize: '3em',
-            letterSpacing: '10px',
-            textAlign: 'left',
-            width: '285px',
-            border: '1px solid var(--tw-border-gray-300)', // Using CSS variable for border color
-          }}
-          placeholder="_ _ _ _ _ _"
+          className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700
+                     text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500
+                     postcode-input text-lg text-center" /* Styling to match screenshot (dark, opaque, standard font) */
+          placeholder="--- ---" /* Placeholder as per screenshot */
           autoComplete="off"
           value={postcode}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
           aria-label="Enter UK postcode"
+          maxLength={8} // Max length for UK postcodes (e.g. A9A 9AA is 7, AA9A 9AA is 8)
         />
         <button
           type="submit"
-          className="absolute right-0 top-0 bottom-0 flex items-center justify-center bg-transparent w-10 h-10 group-hover:bg-primary-500/20 rounded-full transition duration-200"
+          className="absolute right-0 top-0 bottom-0 flex items-center justify-center
+                     px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-r-lg
+                     transition duration-200" /* Solid blue button as per screenshot */
           aria-label="Search postcode"
         >
-          <SearchIcon size={28} className="text-primary-500" />
+          <SearchIcon size={24} className="text-white" /> {/* Icon color adjusted for solid button */}
         </button>
         {showSuggestions && filteredSuggestions.length > 0 && (
-          <div id="suggestions" className="absolute z-10 mt-1 w-full bg-white border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <div id="suggestions" className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
             {filteredSuggestions.map((entry) => (
               <div
                 key={entry.timestamp + entry.postcode}
-                className="suggestion-item text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                className="cursor-pointer bg-gray-100 dark:bg-gray-700 rounded-md p-3 mx-2 my-1
+                           text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white
+                           hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-150"
                 onMouseDown={(e) => e.preventDefault()} // Prevent blur from firing before click
                 onClick={() => handleSuggestionClick(entry.postcode)}
                 tabIndex={0} // Make suggestions keyboard focusable
                 role="option" // ARIA role for listbox options
                 aria-selected={postcode === entry.postcode} // ARIA for selected option
               >
-                {entry.postcode}
+                <p className="font-medium">{entry.postcode}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{new Date(entry.timestamp).toLocaleString()}</p>
               </div>
             ))}
           </div>

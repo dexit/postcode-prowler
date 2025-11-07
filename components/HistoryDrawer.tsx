@@ -45,13 +45,16 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ isOpen, onClose, history,
             history.map((entry) => (
               <li
                 key={entry.timestamp + entry.postcode}
-                className="cursor-pointer text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:underline transition-colors duration-150"
+                className="cursor-pointer bg-gray-100 dark:bg-gray-700 rounded-md p-3
+                           text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white
+                           hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-150"
                 onClick={() => {
                   onSelectHistoryEntry(entry);
                   onClose();
                 }}
               >
-                {entry.postcode} ({new Date(entry.timestamp).toLocaleString()})
+                <p className="font-medium">{entry.postcode}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{new Date(entry.timestamp).toLocaleString()}</p>
               </li>
             ))
           )}

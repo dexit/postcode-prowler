@@ -5,11 +5,10 @@ import HistoryDrawer from './components/HistoryDrawer';
 import PostcodeForm from './components/PostcodeForm';
 import LoadingSpinner from './components/LoadingSpinner';
 import ErrorDisplay from './components/ErrorDisplay';
-import MapComponent from './components/MapComponent'; // Directly import MapComponent
-import StatusCard from './components/StatusCard'; // New card component
-import GeographyCard from './components/GeographyCard'; // New card component
-import AdminCard from './components/AdminCard'; // New card component
-import CodesCard from './components/CodesCard'; // New card component
+import MapComponent from './components/MapComponent';
+import StatusCard from './components/StatusCard';
+import GeographyCard from './components/GeographyCard';
+import AdminCard from './components/AdminCard';
 import { PostcodeApiResponse, HistoryEntry } from './types';
 import { loadHistory, saveHistory } from './utility/localStorage';
 import { fetchAdminDistrictBoundary } from './utility/osmApi';
@@ -94,15 +93,6 @@ const App: React.FC = () => {
     <>
       <Navbar onToggleHistoryDrawer={toggleHistoryDrawer} />
 
-      <header className="bg-gray-100 dark:bg-gray-800 py-6">
-        <div className="mx-auto max-w-[90vw] px-4">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Postcode Prowler Pro <span className="text-primary-500">🕵️‍♂️</span>
-          </h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-300">Uncover the secrets behind every UK postcode</p>
-        </div>
-      </header>
-
       <main className="flex-1 py-8">
         <div ref={resultsRef} className="mx-auto max-w-7xl px-4 lg:max-w-[90vw]">
           <div className="grid grid-cols-1 gap-6"> {/* Main grid container */}
@@ -145,13 +135,6 @@ const App: React.FC = () => {
                 <div className="md:col-span-2 lg:col-span-2">
                   <AdminCard data={postcodeData} />
                 </div>
-
-                {/* Codes Card - spans full width */}
-                {postcodeData.api_data?.codes && Object.keys(postcodeData.api_data.codes).length > 0 && (
-                  <div className="col-span-full">
-                    <CodesCard codes={postcodeData.api_data.codes} />
-                  </div>
-                )}
               </div>
             )}
           </div>

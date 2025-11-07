@@ -70,6 +70,15 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleHistoryDrawer }) => {
           </div>
         </div>
       </div>
+      {/* Header section integrated below navbar for branding */}
+      <div className="bg-gray-100 dark:bg-gray-800 py-6">
+        <div className="mx-auto max-w-[90vw] px-4">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            Postcode Prowler Pro <span className="text-primary-500">🕵️‍♂️</span>
+          </h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-300">Uncover the secrets behind every UK postcode</p>
+        </div>
+      </div>
     </nav>
   );
 };

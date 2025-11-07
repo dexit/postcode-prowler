@@ -25,37 +25,6 @@
   border-radius: 0.5rem;
 }
 
-/* Suggestion dropdown */
-#suggestions {
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.suggestion-item {
-  @apply px-4 py-2 cursor-pointer text-gray-300;
-}
-
-.suggestion-item:hover {
-  @apply bg-gray-700;
-}
-
-/* Status badges */
-.status-badge {
-  @apply px-3 py-1 rounded-full text-sm font-medium;
-}
-
-.status-active {
-  @apply bg-green-900/30 text-green-400;
-}
-
-.status-terminated {
-  @apply bg-yellow-900/30 text-yellow-400;
-}
-
-.status-error {
-  @apply bg-red-900/30 text-red-400;
-}
-
 /* Drawer transition */
 .drawer { /* Renamed from .drawer-base */
   transition: transform 0.3s ease-in-out;
