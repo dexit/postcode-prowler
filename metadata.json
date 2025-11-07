@@ -1,0 +1,5 @@
+{
+  "name": "Postcode Prowler Pro",
+  "description": "Uncover the secrets behind every UK postcode with ease. This application allows users to search for UK postcodes and view detailed geographical, administrative, and status information, including a map location.",
+  "requestFramePermissions": []
+}

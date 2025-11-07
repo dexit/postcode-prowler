@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Postcode Prowler Pro</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet CSS for maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Importmap for module imports -->
+  <script type="importmap">
+  {
+    "imports": {
+      "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+      "react/": "https://aistudiocdn.com/react@^19.2.0/",
+      "react": "https://aistudiocdn.com/react@^19.2.0",
+      "leaflet": "https://aistudiocdn.com/leaflet@^1.9.4"
+    }
+  }
+  </script>
+
+  <!-- Tailwind custom colours -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 500:'#3b82f6', 600:'#2563eb', 700:'#1d4ed8' },
+            secondary:{ 500:'#10b981', 600:'#059669', 700:'#047857' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="h-full flex flex-col">
+  <div id="root" class="h-full flex flex-col"></div>
+
+  <!-- Main React app script -->
+  <script type="module" src="index.tsx"></script>
+</body>
+</html>
