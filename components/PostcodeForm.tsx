@@ -73,16 +73,25 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
     : history;
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="mb-8 max-w-sm mx-auto">
-      <div className="relative">
+    <form ref={formRef} onSubmit={handleSubmit} className="mb-8 max-w-sm mx-auto group">
+      <div className="relative flex items-center rounded-lg border border-gray-300 dark:border-gray-700"> {/* This div provides the border */}
         <input
           ref={inputRef}
           type="text"
           id="postcodeInput"
-          className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700
-                     text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500
-                     postcode-input text-lg text-center" /* Styling to match screenshot (dark, opaque, standard font) */
-          placeholder="--- ---" /* Placeholder as per screenshot */
+          className="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none focus:ring-0
+                     postcode-input text-left appearance-none"
+          // Explicit inline styles for precise control as requested
+          style={{
+            padding: '0 48px 0 0', // padding: 0 for top/bottom, 48px right (for button), 0 left
+            fontSize: '3em',
+            letterSpacing: '10px',
+            textAlign: 'left',
+            width: '285px',
+            // Add a slight left padding to avoid text touching the edge for better visual
+            paddingLeft: '10px' // Added for better visual alignment, overrides 'padding: 0' for left side
+          }}
+          placeholder="_ _ _  _ _ _"
           autoComplete="off"
           value={postcode}
           onChange={handleChange}
@@ -93,15 +102,15 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
         />
         <button
           type="submit"
-          className="absolute right-0 top-0 bottom-0 flex items-center justify-center
-                     px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-r-lg
-                     transition duration-200" /* Solid blue button as per screenshot */
+          className="absolute right-0 flex items-center justify-center w-10 h-10
+                     bg-transparent text-white font-medium transition duration-200
+                     group-hover:bg-primary-500/20 rounded-full" // Circular hover
           aria-label="Search postcode"
         >
-          <SearchIcon size={24} className="text-white" /> {/* Icon color adjusted for solid button */}
+          <SearchIcon size={28} className="text-primary-500" /> {/* Icon color */}
         </button>
         {showSuggestions && filteredSuggestions.length > 0 && (
-          <div id="suggestions" className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          <div id="suggestions" className="absolute z-10 top-full mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
             {filteredSuggestions.map((entry) => (
               <div
                 key={entry.timestamp + entry.postcode}

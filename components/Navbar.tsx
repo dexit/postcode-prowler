@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { SunIcon, MoonIcon } from './Icons';
+import { SunIcon, MoonIcon, MenuIcon, XIcon } from './Icons';
 
 interface NavbarProps {
   onToggleHistoryDrawer: () => void;
@@ -13,6 +13,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleHistoryDrawer }) => {
     }
     return false;
   });
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -28,10 +29,15 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleHistoryDrawer }) => {
     setIsDarkMode(prevMode => !prevMode);
   }, []);
 
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(prev => !prev);
+  }, []);
+
   return (
-    <nav className="bg-gray-100/50 dark:bg-gray-800/50">
+    <nav className="bg-gray-100/50 dark:bg-gray-800/50 backdrop-blur-md shadow-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
+          {/* Logo and Desktop Nav */}
           <div className="flex items-center">
             <div className="shrink-0">
               <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
@@ -51,8 +57,10 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleHistoryDrawer }) => {
               </div>
             </div>
           </div>
-          <div className="hidden md:block">
-            <div className="ml-4 flex items-center md:ml-6">
+
+          {/* Mobile menu button and Desktop Theme Toggle */}
+          <div className="flex items-center">
+            <div className="hidden md:block">
               <button
                 id="themeToggle"
                 onClick={handleThemeToggle}
@@ -67,9 +75,57 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleHistoryDrawer }) => {
                 )}
               </button>
             </div>
+            {/* Mobile menu button */}
+            <div className="-mr-2 flex md:hidden">
+              <button
+                type="button"
+                className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                aria-controls="mobile-menu"
+                aria-expanded="false"
+                onClick={toggleMobileMenu}
+              >
+                <span className="absolute -inset-0.5"></span>
+                <span className="sr-only">Open main menu</span>
+                {isMobileMenuOpen ? (
+                  <XIcon className="block h-6 w-6" />
+                ) : (
+                  <MenuIcon className="block h-6 w-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Mobile menu panel */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden" id="mobile-menu">
+          <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+            <a href="#" aria-current="page"
+               className="block rounded-md bg-gray-200 px-3 py-2 text-base font-medium text-gray-900 dark:bg-gray-900 dark:text-white">Dashboard</a>
+            <button
+              onClick={() => { onToggleHistoryDrawer(); toggleMobileMenu(); }}
+              className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white w-full text-left"
+            >
+              History
+            </button>
+            <a href="#"
+               className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">API Docs</a>
+            <button
+              onClick={handleThemeToggle}
+              className="relative rounded-full p-1 text-gray-600 hover:text-gray-900 focus:outline-2 focus:outline-offset-2 focus:outline-primary-500 dark:text-gray-400 dark:hover:text-white w-full text-left flex items-center gap-2 mt-2"
+            >
+              {isDarkMode ? (
+                <MoonIcon className="size-6" />
+              ) : (
+                <SunIcon className="size-6" />
+              )}
+              <span>Toggle Theme</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header section integrated below navbar for branding */}
       <div className="bg-gray-100 dark:bg-gray-800 py-6">
         <div className="mx-auto max-w-[90vw] px-4">

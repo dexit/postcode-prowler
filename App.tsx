@@ -3,12 +3,12 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HistoryDrawer from './components/HistoryDrawer';
 import PostcodeForm from './components/PostcodeForm';
-import LoadingSpinner from './components/LoadingSpinner';
 import ErrorDisplay from './components/ErrorDisplay';
 import MapComponent from './components/MapComponent';
 import StatusCard from './components/StatusCard';
 import GeographyCard from './components/GeographyCard';
 import AdminCard from './components/AdminCard';
+import SkeletonCard from './components/SkeletonCard'; // Import the new SkeletonCard
 import { PostcodeApiResponse, HistoryEntry } from './types';
 import { loadHistory, saveHistory } from './utility/localStorage';
 import { fetchAdminDistrictBoundary } from './utility/osmApi';
@@ -104,7 +104,18 @@ const App: React.FC = () => {
               />
             </div>
 
-            {isLoading && <div className="col-span-full"><LoadingSpinner /></div>}
+            {isLoading && (
+              <div className="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Skeleton for Map */}
+                <SkeletonCard className="md:col-span-2 lg:col-span-2" />
+                {/* Skeleton for Status Card */}
+                <SkeletonCard className="md:col-span-2 lg:col-span-2" />
+                {/* Skeleton for Geography Card */}
+                <SkeletonCard className="md:col-span-2 lg:col-span-1" />
+                {/* Skeleton for Administrative Card */}
+                <SkeletonCard className="md:col-span-2 lg:col-span-3" />
+              </div>
+            )}
             {error && <div className="col-span-full"><ErrorDisplay message={error} /></div>}
 
             {postcodeData && !isLoading && !error && postcodeData.asf && (
@@ -126,13 +137,13 @@ const App: React.FC = () => {
                   <StatusCard data={postcodeData} />
                 </div>
 
-                {/* Geography Card - spans two columns */}
-                <div className="md:col-span-2 lg:col-span-2">
+                {/* Geography Card - spans one column on large screens */}
+                <div className="md:col-span-2 lg:col-span-1">
                   <GeographyCard data={postcodeData} />
                 </div>
 
-                {/* Administrative Card - fills remaining space */}
-                <div className="md:col-span-2 lg:col-span-2">
+                {/* Administrative Card - spans three columns on large screens */}
+                <div className="md:col-span-2 lg:col-span-3">
                   <AdminCard data={postcodeData} />
                 </div>
               </div>

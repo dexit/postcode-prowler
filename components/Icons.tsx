@@ -73,3 +73,20 @@ export const XIcon: React.FC<IconProps> = ({ size = 24, className = '', ...props
     <path d="M6 18 18 6M6 6l12 12" />
   </svg>
 );
+
+export const MenuIcon: React.FC<IconProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    width={size}
+    height={size}
+    {...props}
+  >
+    <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+  </svg>
+);
