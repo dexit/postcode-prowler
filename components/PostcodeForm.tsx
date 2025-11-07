@@ -74,7 +74,7 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="mb-8 max-w-sm mx-auto group">
-      <div className="relative flex items-center rounded-lg border border-gray-300 dark:border-gray-700"> {/* This div provides the border */}
+      <div className="relative flex items-center rounded-lg"> {/* Removed border classes from this div */}
         <input
           ref={inputRef}
           type="text"
@@ -83,13 +83,11 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
                      postcode-input text-left appearance-none"
           // Explicit inline styles for precise control as requested
           style={{
-            padding: '0 48px 0 0', // padding: 0 for top/bottom, 48px right (for button), 0 left
+            padding: '0 8px 0 10px', // padding: 0 for top/bottom, 8px right (for button), 10px left
             fontSize: '3em',
             letterSpacing: '10px',
             textAlign: 'left',
             width: '285px',
-            // Add a slight left padding to avoid text touching the edge for better visual
-            paddingLeft: '10px' // Added for better visual alignment, overrides 'padding: 0' for left side
           }}
           placeholder="_ _ _  _ _ _"
           autoComplete="off"
