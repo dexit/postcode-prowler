@@ -5,10 +5,13 @@ import HistoryDrawer from './components/HistoryDrawer';
 import PostcodeForm from './components/PostcodeForm';
 import LoadingSpinner from './components/LoadingSpinner';
 import ErrorDisplay from './components/ErrorDisplay';
-import PostcodeResults from './components/PostcodeResults';
+import MapComponent from './components/MapComponent'; // Directly import MapComponent
+import StatusCard from './components/StatusCard'; // New card component
+import GeographyCard from './components/GeographyCard'; // New card component
+import AdminCard from './components/AdminCard'; // New card component
 import { PostcodeApiResponse, HistoryEntry } from './types';
 import { loadHistory, saveHistory } from './utility/localStorage';
-import { fetchAdminDistrictBoundary } from './utility/osmApi'; // Import new OSM API utility
+import { fetchAdminDistrictBoundary } from './utility/osmApi';
 
 const App: React.FC = () => {
   const [postcodeData, setPostcodeData] = useState<PostcodeApiResponse | null>(null);
@@ -91,7 +94,7 @@ const App: React.FC = () => {
       <Navbar onToggleHistoryDrawer={toggleHistoryDrawer} />
 
       <header className="bg-gray-100 dark:bg-gray-800 py-6">
-        <div className="mx-auto max-w-[90vw] px-4"> {/* Adjusted to 90vw */}
+        <div className="mx-auto max-w-[90vw] px-4">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             Postcode Prowler Pro <span className="text-primary-500">🕵️‍♂️</span>
           </h1>
@@ -99,17 +102,47 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="flex-1 mx-auto px-4 py-8"> {/* Removed 'container' class */}
-        <div ref={resultsRef} className="max-w-[90vw] mx-auto"> {/* Adjusted to 90vw and added ref */}
-          <PostcodeForm
-            onSearch={handleSearch}
-            history={history}
-            initialPostcode={initialPostcodeSearch}
-          />
+      <main className="flex-1 py-8">
+        <div ref={resultsRef} className="mx-auto max-w-7xl px-4 lg:max-w-[90vw]">
+          <div className="grid grid-cols-1 gap-6"> {/* Main grid container */}
+            <div className="col-span-full"> {/* Postcode form always spans full width */}
+              <PostcodeForm
+                onSearch={handleSearch}
+                history={history}
+                initialPostcode={initialPostcodeSearch}
+              />
+            </div>
 
-          {isLoading && <LoadingSpinner />}
-          {error && <ErrorDisplay message={error} />}
-          {postcodeData && !isLoading && !error && <PostcodeResults data={postcodeData} />}
+            {isLoading && <div className="col-span-full"><LoadingSpinner /></div>}
+            {error && <div className="col-span-full"><ErrorDisplay message={error} /></div>}
+
+            {postcodeData && !isLoading && !error && postcodeData.asf && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> {/* Results bento grid */}
+                {/* Map component - spans two columns */}
+                {(postcodeData.api_data?.latitude !== undefined && postcodeData.api_data?.longitude !== undefined) && (
+                  <div className="md:col-span-2 lg:col-span-2">
+                    <MapComponent
+                      latitude={postcodeData.api_data.latitude}
+                      longitude={postcodeData.api_data.longitude}
+                      districtBoundaryGeoJson={postcodeData.api_data.osm_admin_district_geojson}
+                      districtName={postcodeData.api_data.admin_district}
+                    />
+                  </div>
+                )}
+
+                {/* Status Card - fills remaining column or full width */}
+                <StatusCard data={postcodeData} />
+
+                {/* Geography Card - spans two columns */}
+                <div className="md:col-span-2 lg:col-span-2">
+                  <GeographyCard data={postcodeData} />
+                </div>
+
+                {/* Administrative Card - fills remaining space */}
+                <AdminCard data={postcodeData} />
+              </div>
+            )}
+          </div>
         </div>
       </main>
 

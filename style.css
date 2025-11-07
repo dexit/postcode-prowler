@@ -32,7 +32,7 @@
 }
 
 .suggestion-item {
-  @apply px-4 py-2 hover:bg-gray-700 cursor-pointer text-gray-300;
+  @apply px-4 py-2 cursor-pointer text-gray-300;
 }
 
 .suggestion-item:hover {

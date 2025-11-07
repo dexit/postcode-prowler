@@ -74,45 +74,44 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="mb-8 max-w-lg mx-auto">
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1 relative">
-          <input
-            ref={inputRef}
-            type="text"
-            id="postcodeInput"
-            className="w-full px-4 py-4 text-lg rounded-lg bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 postcode-input dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
-            placeholder="_ _ _ _ _ _"
-            autoComplete="off"
-            value={postcode}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            aria-label="Enter UK postcode"
-          />
-          {showSuggestions && filteredSuggestions.length > 0 && (
-            <div id="suggestions" className="absolute z-10 mt-1 w-full bg-white border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
-              {filteredSuggestions.map((entry) => (
-                <div
-                  key={entry.timestamp + entry.postcode}
-                  className="suggestion-item text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                  onMouseDown={(e) => e.preventDefault()} // Prevent blur from firing before click
-                  onClick={() => handleSuggestionClick(entry.postcode)}
-                  tabIndex={0} // Make suggestions keyboard focusable
-                  role="option" // ARIA role for listbox options
-                  aria-selected={postcode === entry.postcode} // ARIA for selected option
-                >
-                  {entry.postcode}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+      <div className="relative"> {/* Changed to relative for inline button */}
+        <input
+          ref={inputRef}
+          type="text"
+          id="postcodeInput"
+          className="w-full px-4 py-4 pr-14 text-lg rounded-lg bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 postcode-input dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
+          placeholder="_ _ _ _ _ _"
+          autoComplete="off"
+          value={postcode}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          aria-label="Enter UK postcode"
+        />
         <button
           type="submit"
-          className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition duration-200"
+          className="absolute right-0 top-0 bottom-0 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-r-lg transition duration-200 flex items-center justify-center"
+          aria-label="Search postcode"
         >
-          <SearchIcon className="mr-2" /> Search
+          <SearchIcon className="size-5" />
         </button>
+        {showSuggestions && filteredSuggestions.length > 0 && (
+          <div id="suggestions" className="absolute z-10 mt-1 w-full bg-white border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
+            {filteredSuggestions.map((entry) => (
+              <div
+                key={entry.timestamp + entry.postcode}
+                className="suggestion-item text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                onMouseDown={(e) => e.preventDefault()} // Prevent blur from firing before click
+                onClick={() => handleSuggestionClick(entry.postcode)}
+                tabIndex={0} // Make suggestions keyboard focusable
+                role="option" // ARIA role for listbox options
+                aria-selected={postcode === entry.postcode} // ARIA for selected option
+              >
+                {entry.postcode}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </form>
   );
