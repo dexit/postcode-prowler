@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HistoryDrawer from './components/HistoryDrawer';
@@ -8,6 +8,7 @@ import ErrorDisplay from './components/ErrorDisplay';
 import PostcodeResults from './components/PostcodeResults';
 import { PostcodeApiResponse, HistoryEntry } from './types';
 import { loadHistory, saveHistory } from './utility/localStorage';
+import { fetchAdminDistrictBoundary } from './utility/osmApi'; // Import new OSM API utility
 
 const App: React.FC = () => {
   const [postcodeData, setPostcodeData] = useState<PostcodeApiResponse | null>(null);
@@ -17,11 +18,20 @@ const App: React.FC = () => {
   const [isHistoryDrawerOpen, setIsHistoryDrawerOpen] = useState<boolean>(false);
   const [initialPostcodeSearch, setInitialPostcodeSearch] = useState<string | undefined>(undefined);
 
+  const resultsRef = useRef<HTMLDivElement>(null); // Ref for scrolling to results
+
   // Load history from local storage on initial mount
   useEffect(() => {
     const storedHistory = loadHistory();
     setHistory(storedHistory);
   }, []);
+
+  // Effect to scroll to results when data/error changes or loading finishes
+  useEffect(() => {
+    if ((postcodeData || error) && !isLoading) {
+      resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [postcodeData, error, isLoading]);
 
   const handleSearch = useCallback(async (postcode: string) => {
     setIsLoading(true);
@@ -30,7 +40,6 @@ const App: React.FC = () => {
     setInitialPostcodeSearch(postcode); // Set initial postcode for the form if it was from history
 
     try {
-      // Using the provided CORS proxy
       const apiUrl = `https://cf-cors-air.pathway-group.workers.dev/api/?url=https://pathwaygroup.co.uk/dev/hubhook/hspics/src/postcodes/v2/api/asf?postcode=${encodeURIComponent(postcode)}`;
       const response = await fetch(apiUrl);
 
@@ -43,6 +52,15 @@ const App: React.FC = () => {
       if (data.status === 404 || !data.asf) {
         setError(data.error || 'No matches found for the entered postcode.');
         return;
+      }
+
+      // If API data is available and contains admin_district, fetch OSM boundary
+      if (data.status === 200 && data.api_data?.admin_district) {
+        const districtGeoJson = await fetchAdminDistrictBoundary(data.api_data.admin_district);
+        if (districtGeoJson) {
+          // Create a new object for api_data to ensure immutability
+          data.api_data = { ...data.api_data, osm_admin_district_geojson: districtGeoJson };
+        }
       }
 
       setPostcodeData(data);
@@ -61,6 +79,7 @@ const App: React.FC = () => {
     setPostcodeData(entry.data);
     setError(null);
     setInitialPostcodeSearch(entry.postcode); // Update form with selected postcode
+    // No need to re-fetch OSM data if it's already in history
   }, []);
 
   const toggleHistoryDrawer = useCallback(() => {
@@ -71,17 +90,17 @@ const App: React.FC = () => {
     <>
       <Navbar onToggleHistoryDrawer={toggleHistoryDrawer} />
 
-      <header className="bg-gray-800 py-6">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold text-white">
+      <header className="bg-gray-100 dark:bg-gray-800 py-6">
+        <div className="mx-auto max-w-[90vw] px-4"> {/* Adjusted to 90vw */}
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             Postcode Prowler Pro <span className="text-primary-500">🕵️‍♂️</span>
           </h1>
-          <p className="mt-2 text-gray-300">Uncover the secrets behind every UK postcode</p>
+          <p className="mt-2 text-gray-600 dark:text-gray-300">Uncover the secrets behind every UK postcode</p>
         </div>
       </header>
 
-      <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="max-w-3xl mx-auto">
+      <main className="flex-1 mx-auto px-4 py-8"> {/* Removed 'container' class */}
+        <div ref={resultsRef} className="max-w-[90vw] mx-auto"> {/* Adjusted to 90vw and added ref */}
           <PostcodeForm
             onSearch={handleSearch}
             history={history}

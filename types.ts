@@ -15,6 +15,7 @@ export interface ApiData {
   incode: string;
   outcode: string;
   parliamentary_constituency: string;
+  parliamentary_constituency_2024?: string; // Added as it's in the example data
   admin_district: string;
   parish: string;
   admin_county: string | null;
@@ -22,34 +23,44 @@ export interface ApiData {
   ced: string | null;
   ccg: string;
   nuts: string;
+  pfa?: string; // Added as it's in the example data
   codes: {
     admin_district: string;
     admin_county: string;
     admin_ward: string;
     parish: string;
     parliamentary_constituency: string;
+    parliamentary_constituency_2024?: string; // Added as it's in the example data
     ccg: string;
+    ccg_id?: string; // Added as it's in the example data
+    ced?: string; // Added as it's in the example data
     nuts: string;
+    lsoa?: string; // Added as it's in the example data
+    msoa?: string; // Added as it's in the example data
+    lau2?: string; // Added as it's in the example data
+    pfa?: string; // Added as it's in the example data
   };
-  terminated?: string; // Date of termination if applicable
+  terminated?: boolean; // Changed to boolean as per example data
   year_terminated?: number;
   month_terminated?: number;
+  osm_admin_district_geojson?: any; // New field for OSM boundary GeoJSON
 }
 
 export interface AsfData {
   postcode: string;
-  status: string; // e.g., "Active"
-  effective_from: string;
-  effective_to: string;
   area_name: string;
   source_name: string;
-  // Add other properties if available in the ASF response
+  effective_from: string;
+  effective_to: string;
 }
 
 export interface PostcodeApiResponse {
   status: number;
+  effective?: boolean; // Added as it's in the example data
+  api_source?: string; // Added as it's in the example data
   api_data?: ApiData;
   asf?: AsfData;
+  message?: string; // Added as it's in the example data
   error?: string;
 }
 

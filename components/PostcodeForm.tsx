@@ -80,7 +80,7 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
             ref={inputRef}
             type="text"
             id="postcodeInput"
-            className="w-full px-4 py-4 text-lg rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 postcode-input"
+            className="w-full px-4 py-4 text-lg rounded-lg bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 postcode-input dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
             placeholder="_ _ _ _ _ _"
             autoComplete="off"
             value={postcode}
@@ -90,11 +90,11 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
             aria-label="Enter UK postcode"
           />
           {showSuggestions && filteredSuggestions.length > 0 && (
-            <div id="suggestions" className="absolute z-10 mt-1 w-full bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
+            <div id="suggestions" className="absolute z-10 mt-1 w-full bg-white border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
               {filteredSuggestions.map((entry) => (
                 <div
                   key={entry.timestamp + entry.postcode}
-                  className="suggestion-item"
+                  className="suggestion-item text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                   onMouseDown={(e) => e.preventDefault()} // Prevent blur from firing before click
                   onClick={() => handleSuggestionClick(entry.postcode)}
                   tabIndex={0} // Make suggestions keyboard focusable

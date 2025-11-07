@@ -29,23 +29,23 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ isOpen, onClose, history,
     <div className={`fixed inset-0 flex items-end sm:items-center justify-end z-50 ${isOpen ? '' : 'pointer-events-none'}`}>
       <div
         ref={drawerRef}
-        className={`drawer-base bg-gray-800 rounded-l-xl w-80 h-full sm:h-auto sm:w-80 shadow-xl
+        className={`drawer-base bg-white dark:bg-gray-800 rounded-l-xl w-80 h-full sm:h-auto sm:w-80 shadow-xl
           ${isOpen ? 'drawer-open' : 'drawer-closed'}`}
       >
         <div className="p-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-white">Lookup History</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+          <h2 className="text-base font-semibold text-gray-900 dark:text-white">Lookup History</h2>
+          <button onClick={onClose} className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
             <XIcon size={24} />
           </button>
         </div>
         <ul className="space-y-2 px-4 py-2 overflow-y-auto max-h-[calc(100vh-100px)] sm:max-h-[70vh]">
           {history.length === 0 ? (
-            <li className="text-gray-500">No history yet.</li>
+            <li className="text-gray-500 dark:text-gray-400">No history yet.</li>
           ) : (
             history.map((entry) => (
               <li
                 key={entry.timestamp + entry.postcode}
-                className="cursor-pointer text-gray-300 hover:text-white hover:underline transition-colors duration-150"
+                className="cursor-pointer text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:underline transition-colors duration-150"
                 onClick={() => {
                   onSelectHistoryEntry(entry);
                   onClose();
