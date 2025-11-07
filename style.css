@@ -57,7 +57,7 @@
 }
 
 /* Drawer transition */
-.drawer-base {
+.drawer { /* Renamed from .drawer-base */
   transition: transform 0.3s ease-in-out;
 }
 

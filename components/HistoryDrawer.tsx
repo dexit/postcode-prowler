@@ -26,10 +26,10 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({ isOpen, onClose, history,
   }, [isOpen, onClose]);
 
   return (
-    <div className={`fixed inset-0 flex items-end sm:items-center justify-end z-50 ${isOpen ? '' : 'pointer-events-none'}`}>
+    <div className={`fixed inset-0 flex items-end sm:items-center justify-end z-50 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
       <div
         ref={drawerRef}
-        className={`drawer-base bg-white dark:bg-gray-800 rounded-l-xl w-80 h-full sm:h-auto sm:w-80 shadow-xl
+        className={`drawer bg-white dark:bg-gray-800 rounded-l-xl w-80 h-full sm:h-auto sm:w-80 shadow-xl
           ${isOpen ? 'drawer-open' : 'drawer-closed'}`}
       >
         <div className="p-4 flex items-center justify-between">

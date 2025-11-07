@@ -73,13 +73,22 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
     : history;
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="mb-8 max-w-lg mx-auto">
-      <div className="relative"> {/* Changed to relative for inline button */}
+    <form ref={formRef} onSubmit={handleSubmit} className="mb-8 max-w-sm mx-auto">
+      <div className="relative group">
         <input
           ref={inputRef}
           type="text"
           id="postcodeInput"
-          className="w-full px-4 py-4 pr-14 text-lg rounded-lg bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 postcode-input dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
+          className="rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 postcode-input dark:border-gray-700 dark:text-white dark:placeholder-gray-500"
+          style={{
+            background: 'transparent',
+            padding: '0 48px 0 0', // Adjust padding-right for button, padding-left 0 for alignment
+            fontSize: '3em',
+            letterSpacing: '10px',
+            textAlign: 'left',
+            width: '285px',
+            border: '1px solid var(--tw-border-gray-300)', // Using CSS variable for border color
+          }}
           placeholder="_ _ _ _ _ _"
           autoComplete="off"
           value={postcode}
@@ -90,10 +99,10 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
         />
         <button
           type="submit"
-          className="absolute right-0 top-0 bottom-0 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-r-lg transition duration-200 flex items-center justify-center"
+          className="absolute right-0 top-0 bottom-0 flex items-center justify-center bg-transparent w-10 h-10 group-hover:bg-primary-500/20 rounded-full transition duration-200"
           aria-label="Search postcode"
         >
-          <SearchIcon className="size-5" />
+          <SearchIcon size={28} className="text-primary-500" />
         </button>
         {showSuggestions && filteredSuggestions.length > 0 && (
           <div id="suggestions" className="absolute z-10 mt-1 w-full bg-white border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
