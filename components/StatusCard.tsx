@@ -16,7 +16,7 @@ const StatusCard: React.FC<StatusCardProps> = ({ data }) => {
     } else if (api_data?.terminated) {
       return 'status-terminated';
     }
-    return 'status-active bg-green-600/50 text-green-200 ring-1 ring-inset ring-green-500/20'; // Enhanced active status styling
+    return 'status-active';
   };
 
   const getStatusBadgeText = () => {
@@ -29,7 +29,7 @@ const StatusCard: React.FC<StatusCardProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg fade-in">
+    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Postcode Status</h2>
         <span className={`status-badge ${getStatusBadgeClass()}`}>{getStatusBadgeText()}</span>

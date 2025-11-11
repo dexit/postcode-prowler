@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "inputmask": "^5.0.9",
     "leaflet": "^1.9.4",
     "react": "^19.0.0-rc-f994737d14-20240529",
     "react-dom": "^19.0.0-rc-f994737d14-20240529"

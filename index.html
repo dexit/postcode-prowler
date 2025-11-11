@@ -16,34 +16,73 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Importmap for module imports -->
-  <script type="importmap">
-  {
-    "imports": {
-      "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-      "react/": "https://aistudiocdn.com/react@^19.2.0/",
-      "react": "https://aistudiocdn.com/react@^19.2.0",
-      "leaflet": "https://aistudiocdn.com/leaflet@^1.9.4"
+  <!-- Prevent FOUC for dark mode -->
+  <script>
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
     }
-  }
   </script>
 
-  <!-- Tailwind custom colours -->
+  <!-- Tailwind custom config -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: { 500:'#3b82f6', 600:'#2563eb', 700:'#1d4ed8' },
+            primary: {
+              50: '#edf8f4',
+              100: '#d2efde',
+              200: '#a5e0bd',
+              300: '#78d19b',
+              400: '#4bc27a',
+              500: '#049b6a',
+              600: '#048a5e',
+              700: '#03704e',
+              800: '#02563d',
+              900: '#024430',
+              950: '#012b1f'
+            },
             secondary:{ 500:'#10b981', 600:'#059669', 700:'#047857' }
+          },
+          keyframes: {
+            'fade-in': {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            'fade-in-up': {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            'slide-in-right': {
+              '0%': { transform: 'translateX(100%)' },
+              '100%': { transform: 'translateX(0)' },
+            },
+          },
+          animation: {
+            'fade-in': 'fade-in 0.3s ease-out forwards',
+            'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
+            'slide-in-right': 'slide-in-right 0.3s ease-in-out forwards',
           }
         }
       }
     }
   </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "inputmask": "https://aistudiocdn.com/inputmask@^5.0.9",
+    "leaflet": "https://aistudiocdn.com/leaflet@^1.9.4"
+  }
+}
+</script>
 </head>
 
-<body class="h-full flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+<body class="h-full flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white antialiased">
   <div id="root" class="h-full flex flex-col"></div>
 
   <!-- Main React app script -->

@@ -1,14 +1,17 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import Inputmask from 'inputmask';
 import { HistoryEntry } from '../types';
 import { SearchIcon } from './Icons';
+import LoadingSpinner from './LoadingSpinner';
 
 interface PostcodeFormProps {
   onSearch: (postcode: string) => void;
   history: HistoryEntry[];
   initialPostcode?: string;
+  isLoading: boolean;
 }
 
-const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialPostcode }) => {
+const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialPostcode, isLoading }) => {
   const [postcode, setPostcode] = useState<string>(initialPostcode || '');
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -20,33 +23,45 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
     }
   }, [initialPostcode]);
 
-  const formatPostcode = useCallback((value: string): string => {
-    // 1. Convert to uppercase and remove any character that is not a letter or a number
-    let cleanedValue = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  // Initialize Inputmask
+  useEffect(() => {
+    const inputEl = inputRef.current;
+    if (!inputEl) return;
 
-    // 2. Apply dynamic spacing for UK postcodes
-    // The inward part is always 3 characters long, so the space is inserted 3 characters from the end.
-    if (cleanedValue.length > 3) {
-      const outward = cleanedValue.slice(0, cleanedValue.length - 3);
-      const inward = cleanedValue.slice(cleanedValue.length - 3);
-      return outward + ' ' + inward;
-    }
-    return cleanedValue; // If less than 4 characters, no space yet
-  }, []);
+    const im = new Inputmask({
+      mask: '(A[A]9[9] 9AA|A9 9AA|A99 9AA)',
+      definitions: {
+        'A': { validator: "[A-Za-z]", casing: "upper" },
+      },
+      placeholder: "_",
+      clearIncomplete: false,
+      clearMaskOnLostFocus: false,
+      showMaskOnHover: false,
+      showMaskOnFocus: true,
+    });
+    im.mask(inputEl);
+    
+    // Cleanup function to remove mask on unmount
+    return () => {
+      if (inputEl && (inputEl as any).inputmask) {
+        (inputEl as any).inputmask.remove();
+      }
+    };
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPostcode(formatPostcode(e.target.value));
-  }, [formatPostcode]);
+    setPostcode(e.target.value);
+  }, []);
 
   const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const trimmedPostcode = postcode.trim();
-    if (trimmedPostcode) {
-      onSearch(trimmedPostcode);
+    if (inputRef.current && (inputRef.current as any).inputmask?.isComplete() && !isLoading) {
+      const value = (inputRef.current as any).value;
+      onSearch(value);
       setShowSuggestions(false);
-      inputRef.current?.blur(); // Hide keyboard on mobile after submit
+      inputRef.current?.blur();
     }
-  }, [postcode, onSearch]);
+  }, [onSearch, isLoading]);
 
   const handleSuggestionClick = useCallback((entryPostcode: string) => {
     setPostcode(entryPostcode);
@@ -68,12 +83,13 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
     }, 200);
   }, []);
 
-  const filteredSuggestions = postcode
-    ? history.filter(entry => entry.postcode.toUpperCase().includes(postcode.toUpperCase()))
+  const cleanPostcode = postcode.replace(/_/g, '').trim();
+  const filteredSuggestions = cleanPostcode
+    ? history.filter(entry => entry.postcode.toUpperCase().startsWith(cleanPostcode.toUpperCase()))
     : history;
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="mb-8 max-w-sm mx-auto group">
+    <form ref={formRef} onSubmit={handleSubmit} className="mb-8 max-w-[21rem] w-full mx-auto group">
       <div className="relative flex items-center rounded-lg"> {/* Removed border classes from this div */}
         <input
           ref={inputRef}
@@ -85,27 +101,25 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
           style={{
             padding: '0 8px 0 10px', // padding: 0 for top/bottom, 8px right (for button), 10px left
             fontSize: '3em',
-            letterSpacing: '10px',
+            letterSpacing: '6px',
             textAlign: 'left',
-            width: '285px',
-          }}
-          placeholder="_ _ _  _ _ _"
+            }}
           autoComplete="off"
           value={postcode}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
           aria-label="Enter UK postcode"
-          maxLength={8} // Max length for UK postcodes (e.g. A9A 9AA is 7, AA9A 9AA is 8)
         />
         <button
           type="submit"
+          disabled={isLoading}
           className="absolute right-0 flex items-center justify-center w-10 h-10
                      bg-transparent text-white font-medium transition duration-200
-                     group-hover:bg-primary-500/20 rounded-full" // Circular hover
+                     group-hover:bg-primary-500/20 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Search postcode"
         >
-          <SearchIcon size={28} className="text-primary-500" /> {/* Icon color */}
+          {isLoading ? <LoadingSpinner size={24} className="text-primary-500" /> : <SearchIcon size={28} className="text-primary-500" />}
         </button>
         {showSuggestions && filteredSuggestions.length > 0 && (
           <div id="suggestions" className="absolute z-10 top-full mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
