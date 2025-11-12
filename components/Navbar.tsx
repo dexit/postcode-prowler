@@ -34,14 +34,20 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleHistoryDrawer }) => {
   }, []);
 
   return (
-    <nav className="bg-gray-100/50 dark:bg-gray-800/50 backdrop-blur-md shadow-sm">
+    <nav className="bg-gray-100 dark:bg-gray-800 shadow-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           {/* Logo and Desktop Nav */}
           <div className="flex items-center">
             <div className="shrink-0">
-              <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                   alt="Postcode Prowler" className="size-8" />
+              <a href="#" className="flex flex-col">
+                <span className="text-xl font-bold text-gray-900 dark:text-white">
+                  Postcode Prowler Pro <span className="text-primary-500">🕵️‍♂️</span>
+                </span>
+                <span className="text-xs text-gray-600 dark:text-gray-300">
+                  Uncover the secrets behind every UK postcode
+                </span>
+              </a>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
@@ -125,16 +131,6 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleHistoryDrawer }) => {
           </div>
         </div>
       )}
-
-      {/* Header section integrated below navbar for branding */}
-      <div className="bg-gray-100 dark:bg-gray-800 py-6">
-        <div className="mx-auto max-w-[90vw] px-4">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Postcode Prowler Pro <span className="text-primary-500">🕵️‍♂️</span>
-          </h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-300">Uncover the secrets behind every UK postcode</p>
-        </div>
-      </div>
     </nav>
   );
 };

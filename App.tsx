@@ -91,7 +91,7 @@ const App: React.FC = () => {
       <Navbar onToggleHistoryDrawer={toggleHistoryDrawer} />
 
       <main className="flex-1 py-8">
-        <div ref={resultsRef} className="mx-auto max-w-7xl px-4 lg:max-w-[90vw]">
+        <div ref={resultsRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-6"> {/* Main grid container */}
             <div className="col-span-full"> {/* Postcode form always spans full width */}
               <PostcodeForm
