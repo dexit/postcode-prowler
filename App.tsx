@@ -104,10 +104,16 @@ const App: React.FC = () => {
 
             {isLoading && (
               <div className="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <SkeletonCard className="md:col-span-2 lg:col-span-2" />
-                <SkeletonCard className="md:col-span-2 lg:col-span-2" />
-                <SkeletonCard className="md:col-span-2 lg:col-span-1" />
-                <SkeletonCard className="md:col-span-2 lg:col-span-3" />
+                <SkeletonCard className="md:col-span-2 lg:col-span-2" /> {/* Map Skeleton */}
+                <SkeletonCard className="md:col-span-2 lg:col-span-2" /> {/* Status Card Skeleton */}
+                <SkeletonCard className="md:col-span-2 lg:col-span-1" /> {/* Geography Card Skeleton */}
+                <SkeletonCard className="md:col-span-2 lg:col-span-3" /> {/* Admin Card Skeleton */}
+                {/* Codes Card Skeleton - tailored to match CodesCard layout */}
+                <SkeletonCard 
+                  className="col-span-full" 
+                  numItems={12} // CodesCard often has many items, e.g., 12 in the example data
+                  itemGridClass="grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6" 
+                />
               </div>
             )}
             {error && <div className="col-span-full"><ErrorDisplay message={error} /></div>}
