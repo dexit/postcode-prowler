@@ -119,7 +119,7 @@ const PostcodeForm: React.FC<PostcodeFormProps> = ({ onSearch, history, initialP
                      group-hover:bg-primary-500/20 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Search postcode"
         >
-          {isLoading ? <LoadingSpinner size={24} className="text-primary-500" /> : <SearchIcon size={28} className="text-primary-500" />}
+          {isLoading ? <LoadingSpinner size={28} className="text-primary-500" /> : <SearchIcon size={28} className="text-primary-500" />}
         </button>
         {showSuggestions && filteredSuggestions.length > 0 && (
           <div id="suggestions" className="absolute z-10 top-full mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
